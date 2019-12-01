@@ -1,7 +1,10 @@
-const VueLoaderPlugin = require("vue-loader");
 const webpack = require("webpack");
+let path = require("path");
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 module.exports = {
-  publicPath: "/", // 基本路径
+  publicPath: "./", // 基本路径
   outputDir: "dist", // 输出文件目录
   assetsDir: "", // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录 , Default: ''
   indexPath: "index.html", //Default: 'index.html' // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
@@ -15,17 +18,10 @@ module.exports = {
   // webpack配置
   chainWebpack: config => {
     config.resolve.symlinks(true); // 修复HMR
+    config.resolve.alias.set("@", resolve("src"));
+    //配置快捷路径，styles为路径名字，resolve是原路径地址
   },
   configureWebpack: {
-    /*module: {
-      rules: [
-        {
-          test: /\.vue$/,
-          loader: "vue-loader"
-        }
-      ]
-    },
-    plugins: [new VueLoaderPlugin()]*/
     plugins: [
       new webpack.ProvidePlugin({
         $: "jquery",
@@ -58,18 +54,18 @@ module.exports = {
     port: 8080,
     https: false,
     hotOnly: false,
-    proxy: null, // 设置代理
-    /*proxy: {
-      "/api": {
+    //proxy: null, // 设置代理
+    proxy: {
+      "/devApi": {
         // 目标:指向网络地址
-        target: "https://api.douban.com",
+        target: "http://129.204.189.149:8089",
         // webpack属性，映射一个host
         changeOrigin: true,
         pathRewrite: {
-          "/api": ""
+          "/devApi": ""
         }
       }
-    },*/
+    },
     before: app => {}
   },
   // 第三方插件配置

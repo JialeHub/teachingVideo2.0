@@ -52,31 +52,19 @@
 </template>
 
 <script>
-function saveCookie(cookieName, cookieValue, cookieDates) {
-  let d = new Date();
-  d.setDate(d.getDate() + cookieDates);
-  document.cookie =
-    cookieName + "=" + cookieValue + ";expires=" + d.toGMTString();
-}
-
-function removeCookie(cookieName) {
-  document.cookie = encodeURIComponent(cookieName) + "=; expires=" + new Date();
-}
-
-function getCookie(cookieName) {
-  let cookieStr = unescape(document.cookie);
-  let arr = cookieStr.split("; ");
-  let cookieValue = "";
-  for (let i = 0; i < arr.length; i++) {
-    let temp = arr[i].split("=");
-    if (temp[0] === cookieName) {
-      cookieValue = temp[1];
-      break;
-    }
-  }
-  return cookieValue;
-}
-
+import { loginApi } from "@/api/login";
+import {
+  getToken,
+  getUserAccount,
+  getUserPassword,
+  setToken,
+  setIdentity,
+  setUserName,
+  setUserAccount,
+  setUserPassword,
+  removeUserAccount,
+  removeUserPassword
+} from "@/utils/app";
 export default {
   name: "Login",
   data() {
@@ -90,19 +78,13 @@ export default {
   },
   created() {
     window.login_this = this;
-    window.state = {
-      userName: "" || getCookie("userName"),
-      userToken: "" || getCookie("userToken")
-    };
 
-    if (getCookie("userToken") !== "") {
-      window.location.href = "#/personal";
-    } else {
-      window.head_this.userName = "登录";
+    if (getToken()) {
+      this.$router.push({ name: "personal" });
     }
 
-    this.account = "" || getCookie("userAccount"); //若有记住账号则自动填充
-    this.password = "" || getCookie("userPassword");
+    this.account = getUserAccount(); //若有记住账号则自动填充
+    this.password = getUserPassword();
 
     if (this.password !== "") {
       //如果密码为空代表以前没记住我，保持默认
@@ -117,46 +99,55 @@ export default {
         offset: 80
       });
     },
-    transform(data) {
-      let str = "";
-      for (let key in data) {
-        str = str + `${key}=${data[key]}&`;
+    login() {
+      if (this.account === "" || this.password === "") {
+        this.$message({
+          showClose: true,
+          message: "账号或密码不能为空",
+          type: "error",
+          duration: 3000
+        });
+        return false;
       }
-      window.console.log(str.replace(/&$/, ""));
-      return str.replace(/&$/, "");
-    },
-    login: function() {
       let data = {
         username: this.account,
         password: this.password
       };
-      data = this.transform(data);
-      this.axios
-        .post("http://129.204.189.149:8089/auth/login", data, {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
-        })
+      loginApi(data)
         .then(response => {
-          window.console.log(response);
-          window.allData = response;
-          window.state.userName = window.allData.data.user.username;
-          window.state.userToken = window.allData.data.user.token;
-          saveCookie("userToken", response.data.token, 7);
-          saveCookie("userName", response.data.user.username, 7);
+          console.log(response);
+          //处理Cookies
+          setToken(response.data.token);
+          setUserName(response.data.user.username);
+          setUserAccount(this.account, 14);
           if (this.rememberMe === true) {
-            removeCookie("userAccount");
-            removeCookie("userPassword");
-            saveCookie("userAccount", this.account, 7);
-            saveCookie("userPassword", this.password, 7);
+            setUserPassword(this.password, 14);
           } else {
-            removeCookie("userAccount");
-            removeCookie("userPassword");
+            removeUserAccount();
+            removeUserPassword();
           }
-          //window.allData.token=response.token;
-          window.head_this.userName = window.state.userName;
-          window.location.href = "#/home";
+          //存进vuex
+          this.$store.commit("user/SET_user");
+
+          if (response.data.user.authorities[0].authority === "teacher") {
+            setIdentity("teacher");
+            this.$store.commit("user/SET_isTeacherFlag", true);
+            this.$router.push({ name: "console" });
+          } else {
+            setIdentity("student");
+            this.$store.commit("user/SET_isTeacherFlag", false);
+            this.$router.push({ name: "home" });
+          }
+          this.$message({
+            message: "登陆成功，欢迎您！" + response.data.user.username,
+            type: "success",
+            customClass: "loginMessage",
+            center: true,
+            duration: 3000
+          });
         })
         .catch(error => {
-          window.console.log(error.response.data.message);
+          console.log(error.response);
           this.messageBox = error.response.data.message;
           this.dialogVisible = true;
         });
@@ -167,6 +158,9 @@ export default {
 
 <!-- 添加“scoped”属性以将css仅限于此组件 -->
 <style lang="scss">
+.loginMessage {
+  top: 100px !important;
+}
 #login {
   position: relative;
   min-width: 1060px;
@@ -218,7 +212,7 @@ export default {
       }
 
       .login_box_1_Span {
-        font-family: "黑体 Bold", "黑体 Regular", "黑体";
+        font-family: "黑体 Bold", "黑体 Regular", "黑体", serif;
       }
     }
 

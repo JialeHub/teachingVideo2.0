@@ -1,17 +1,26 @@
 <template>
   <div id="app">
-    <v-studentPart></v-studentPart>
+    <v-studentPart v-if="!this.$store.state.user.isTeacherFlag"></v-studentPart>
+    <v-teacherPart v-if="this.$store.state.user.isTeacherFlag"></v-teacherPart>
   </div>
 </template>
 
 <script>
+import { getIdentity } from "@/utils/app";
+
 export default {
-  name: "studentPart",
+  name: "app",
   components: {
-    "v-studentPart": () => import("./views/studentPart.vue")
+    "v-studentPart": () => import("./views/studentPart.vue"),
+    "v-teacherPart": () => import("./views/teacherPart.vue")
   },
   data() {
     return {};
+  },
+  created() {
+    if (getIdentity() === "teacher") {
+      this.$store.commit("user/SET_isTeacherFlag", true);
+    }
   },
   methods: {}
 };

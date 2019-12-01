@@ -9,7 +9,6 @@
           <router-view></router-view>
         </transition>
       </el-main>
-
       <!--尾部-->
       <el-footer><v-footer></v-footer></el-footer>
     </el-container>
@@ -17,8 +16,8 @@
 </template>
 
 <script>
-import Head from "./student/public/head.vue";
-import Footer from "./student/public/footer.vue";
+import Head from "./student/layout/head.vue";
+import Footer from "./student/layout/footer.vue";
 
 export default {
   name: "studentPart",
@@ -29,7 +28,13 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
+  created() {
+    console.log(this.$store.state.ex);
+    console.log(this.$store.getters.count);
+    this.$store.commit("SET_COUNT", 100);
+    console.log(this.$store.getters.count);
+  }
 };
 </script>
 
