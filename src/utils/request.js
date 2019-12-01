@@ -1,5 +1,19 @@
 import axios from "axios";
-import { Message } from "element-ui";
+import { Loading, Message } from "element-ui";
+
+//开始加载动画
+let loading;
+function startLoading() {
+  loading = Loading.service({
+    lock: true, //是否锁定
+    text: "加载中...", //加载中需要显示的文字
+    background: "rgba(0,0,0,.7)" //背景颜色
+  });
+}
+//结束加载动画
+function endLoading() {
+  loading.close();
+}
 
 const service = axios.create({
   baseURL: "/devApi",
@@ -10,6 +24,7 @@ const service = axios.create({
 service.interceptors.request.use(
   function(config) {
     // 在发送请求之前做些什么
+    startLoading(); //请求时的加载动画
     return config;
   },
   function(error) {
@@ -21,11 +36,13 @@ service.interceptors.request.use(
 // 添加响应拦截器
 service.interceptors.response.use(
   function(response) {
+    endLoading(); //结束加载动画
     // 对响应数据做点什么
     return response;
     //return Promise.resolve(response);
   },
   function(error) {
+    endLoading(); //结束加载动画
     // 对响应错误做点什么
     // console.log(error.response);
     /*Message({

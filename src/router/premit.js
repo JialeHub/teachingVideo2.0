@@ -7,7 +7,7 @@ import {
   removeIdentity
 } from "@/utils/app";
 
-const whileRouter = ["/", "/login", "/home"]; //白名单 //indexOf方法：判断数组中是否存在某个对象，不存在则返回-1
+const whileRouter = ["/", "/login", "/register", "/home"]; //白名单 //indexOf方法：判断数组中是否存在某个对象，不存在则返回-1
 
 //路由守卫：
 router.beforeEach((to, from, next) => {

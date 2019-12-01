@@ -29,12 +29,7 @@ export default {
     return {};
   },
   methods: {},
-  created() {
-    console.log(this.$store.state.ex);
-    console.log(this.$store.getters.count);
-    this.$store.commit("SET_COUNT", 100);
-    console.log(this.$store.getters.count);
-  }
+  created() {}
 };
 </script>
 

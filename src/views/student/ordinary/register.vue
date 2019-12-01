@@ -39,20 +39,11 @@
         </div>
       </div>
     </div>
-
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <span>{{ messageBox }}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
+import { registerApi } from "@/api/register";
 export default {
   name: "Register",
   data() {
@@ -68,24 +59,20 @@ export default {
       messageBox: ""
     };
   },
-  created() {
-    window.register_this = this;
-  },
+  created() {},
   methods: {
+    openMsg(msg, callback) {
+      this.$alert(msg, "提示", {
+        confirmButtonText: "确定",
+        callback
+      });
+    },
     open2() {
       this.$message({
         message: "密码不一致",
         type: "error",
         offset: 80
       });
-    },
-    transform(data) {
-      let str = "";
-      for (let key in data) {
-        str = str + `${key}=${data[key]}&`;
-      }
-      console.log(str.replace(/&$/, ""));
-      return str.replace(/&$/, "");
     },
     register: function() {
       if (this.password !== this.password2) {
@@ -99,23 +86,21 @@ export default {
           StudentID: this.username,
           phone: this.phone
         };
-
-        data = this.transform(data);
-
-        let headers = {
-          "Content-Type": "application/x-www-form-urlencoded"
-        };
-
-        this.axios
-          .post("http://129.204.189.149:8089/auth/register", data, { headers })
+        registerApi(data)
           .then(response => {
-            this.messageBox = response.data.message;
+            if (response.data.status === 303) {
+              const msgCallback = () => {
+                this.$router.push({ name: "login" });
+              };
+              this.openMsg(response.data.message, msgCallback);
+            } else {
+              this.openMsg(response.data.message);
+            }
             console.log(response);
-            this.dialogVisible = true;
           })
           .catch(error => {
-            this.messageBox = error;
-            this.dialogVisible = true;
+            this.openMsg("网络错误");
+            console.log(error);
           });
       }
     }
