@@ -1,6 +1,8 @@
 <template>
   <div id="teacherPart">
-    <consoleLayout></consoleLayout>
+    <layout-header></layout-header>
+    <layout-main></layout-main>
+    <layout-nav></layout-nav>
   </div>
 </template>
 
@@ -8,7 +10,9 @@
 export default {
   name: "teacherPart",
   components: {
-    consoleLayout: () => import("./teacher/layout/index.vue")
+    "layout-header": () => import("./teacher/layout/Header.vue"),
+    "layout-main": () => import("./teacher/layout/Main.vue"),
+    "layout-nav": () => import("./teacher/layout/Nav.vue")
   },
   data() {
     return {};

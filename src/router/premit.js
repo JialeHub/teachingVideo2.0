@@ -4,6 +4,7 @@ import {
   getToken,
   getIdentity,
   removeUserName,
+  removeUserIcon,
   removeIdentity
 } from "@/utils/app";
 
@@ -19,6 +20,9 @@ router.beforeEach((to, from, next) => {
         next("/console");
       } else {
         next();
+        if (from.name !== null) {
+          window.consoleHeader_this.headTitle = to.meta.name;
+        }
       }
     } else {
       if (to.meta.isTeacherFlag === true) {
@@ -32,6 +36,7 @@ router.beforeEach((to, from, next) => {
   } else {
     //console.log("不存在Token");
     removeUserName();
+    removeUserIcon();
     removeIdentity();
     if (whileRouter.indexOf(to.path) !== -1) {
       next();

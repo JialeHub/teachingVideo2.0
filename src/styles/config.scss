@@ -1,1 +1,24 @@
-$navWidth: 230px;
+$navWidth: 220px;
+
+.navWidthOpen{
+  width: $navWidth !important;
+  transition: all 0.2s ease;
+}
+.navWidthNoOpen{
+  width: 60px !important;
+  transition: all 0.2s ease;
+}
+.navWidthOpenL{
+  left: $navWidth !important;
+  transition: all 0.2s ease;
+}
+.navWidthNoOpenL{
+  left: 60px !important;
+  transition: all 0.2s ease;
+}
+.selectDelFilesIng{
+  border: #3a8ee6 solid 2px!important;
+}
+.borderNone{
+  border: none;
+}

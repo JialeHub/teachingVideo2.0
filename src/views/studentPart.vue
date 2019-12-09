@@ -4,11 +4,7 @@
       <!--头部-->
       <el-header><v-head></v-head></el-header>
       <!--中部-->
-      <el-main>
-        <transition mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </el-main>
+      <el-main><router-view></router-view></el-main>
       <!--尾部-->
       <el-footer><v-footer></v-footer></el-footer>
     </el-container>

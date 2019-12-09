@@ -1,5 +1,13 @@
 import axios from "axios";
-import { Loading, Message } from "element-ui";
+import { Loading } from "element-ui";
+import {
+  getToken,
+  getUserAccount,
+  getUserPassword,
+  removeToken,
+  setToken
+} from "./app";
+import { loginApi } from "@/api/login";
 
 //开始加载动画
 let loading;
@@ -24,6 +32,7 @@ const service = axios.create({
 service.interceptors.request.use(
   function(config) {
     // 在发送请求之前做些什么
+    config.headers.Authorization = "Bearer " + getToken();
     startLoading(); //请求时的加载动画
     return config;
   },
@@ -50,6 +59,22 @@ service.interceptors.response.use(
       type: "error",
       duration: 3000
     });*/
+    if (error.response.status === 401) {
+      if (getUserPassword()) {
+        removeToken();
+        let data = {
+          username: getUserAccount(),
+          password: getUserPassword()
+        };
+        loginApi(data)
+          .then(response => {
+            setToken(response.data.token);
+            this.$store.commit("user/SET_user");
+            this.$router.go(0);
+          })
+          .catch(() => {});
+      }
+    }
     return Promise.reject(error);
   }
 );

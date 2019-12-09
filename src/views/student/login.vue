@@ -53,13 +53,16 @@
 
 <script>
 import { loginApi } from "@/api/login";
+import { getPersonal } from "@/api/personal";
 import {
   getToken,
+  getUserName,
   getUserAccount,
   getUserPassword,
   setToken,
   setIdentity,
   setUserName,
+  setUserIcon,
   setUserAccount,
   setUserPassword,
   removeUserAccount,
@@ -115,7 +118,6 @@ export default {
       };
       loginApi(data)
         .then(response => {
-          console.log(response);
           //处理Cookies
           setToken(response.data.token);
           setUserName(response.data.user.username);
@@ -127,7 +129,7 @@ export default {
             removeUserPassword();
           }
           //存进vuex
-          this.$store.commit("user/SET_user");
+          //this.$store.commit("user/SET_user");
 
           if (response.data.user.authorities[0].authority === "teacher") {
             setIdentity("teacher");
@@ -138,6 +140,7 @@ export default {
             this.$store.commit("user/SET_isTeacherFlag", false);
             this.$router.push({ name: "home" });
           }
+          console.log(response);
           this.$message({
             message: "登陆成功，欢迎您！" + response.data.user.username,
             type: "success",
@@ -146,9 +149,28 @@ export default {
             duration: 3000
           });
         })
+        .then(() => {
+          /*获取头像*/
+          let getUserIcon = "";
+          let data2 = getUserName();
+          getPersonal(data2)
+            .then(response2 => {
+              getUserIcon = response2.data.message.personInformation.photo;
+              console.log(getUserIcon);
+              setUserIcon(getUserIcon);
+              window.location.reload();
+              this.$store.commit("user/SET_user");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          console.log(window.head_this.userIcon);
+          console.log(this.$store.state);
+          /*获取头像*/
+        })
         .catch(error => {
           console.log(error.response);
-          this.messageBox = error.response.data.message;
+          this.messageBox = "请求超时";
           this.dialogVisible = true;
         });
     }

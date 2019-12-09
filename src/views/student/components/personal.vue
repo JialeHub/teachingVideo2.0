@@ -5,6 +5,9 @@
         <div class="personalMainBoxP1">
           <div class="personalMsgTitle">
             <span>基本信息</span>
+            <span class="editMsgOpen" @click="editOpen">{{
+              editMsgOpenMsg
+            }}</span>
           </div>
           <div class="personalMsg1">
             <div class="personalMsgName">
@@ -14,6 +17,7 @@
               <el-input
                 v-model="personalMsgName"
                 placeholder="请输入昵称..."
+                :disabled="!editMsgFlag"
               ></el-input>
             </div>
           </div>
@@ -21,23 +25,40 @@
             <div class="personalMsgImgSpan">
               <span>头像</span>
             </div>
+
             <div class="personalMsgImg">
-              <img :src="personalMsgImgSrc" alt="" />
+              <img :src="personalMsgImgSrc" alt="" v-if="!editPhotoFlag" />
+              <el-upload
+                v-if="editPhotoFlag"
+                class="avatar-uploader"
+                :auto-upload="true"
+                action="http://129.204.189.149:8089/person/Edit"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </div>
+
             <div class="personalMsgImgR">
-              <div class="personalMsgImgSrcRText">
+              <div class="personalMsgImgSrcRText" v-if="editMsgFlag">
                 支持jpg 、gif或png格式的图片，建议文件小于20Mb
               </div>
-              <div class="personalMsgImgRButton">
-                <el-button @click="imgEdit">修改头像</el-button>
+              <div class="personalMsgImgRButton" v-if="editMsgFlag">
+                <el-button @click="imgEdit">{{ editPhotoMsg }}</el-button>
               </div>
             </div>
           </div>
           <div class="personalMsg3">
             <div class="personalMsgGenderSpan">
               <span>性别</span>
+              <span v-if="!editMsgFlag" class="personalMsgGenderSpanIn">{{
+                personalMsgGenderFont
+              }}</span>
             </div>
-            <div class="personalMsgGenderR">
+            <div class="personalMsgGenderR" v-if="editMsgFlag">
               <el-radio v-model="personalMsgGender" label="1">男</el-radio>
               <el-radio v-model="personalMsgGender" label="2">女</el-radio>
               <el-radio v-model="personalMsgGender" label="3">保密</el-radio>
@@ -55,9 +76,15 @@
                 show-word-limit
                 placeholder="用一段话介绍你自己，会在你的个人页面示，最多输入80字..."
                 v-model="personalMsgIntroduce"
+                :disabled="!editMsgFlag"
               >
               </el-input>
             </div>
+          </div>
+        </div>
+        <div class="personalMainBoxP3" v-if="editMsgFlag">
+          <div class="saveButton">
+            <el-button @click="save">保 存</el-button>
           </div>
         </div>
         <div class="personalMainBoxP2">
@@ -97,24 +124,28 @@
             </div>
           </div>
         </div>
-        <div class="personalMainBoxP3">
-          <div class="saveButton">
-            <el-button @click="save">保 存</el-button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getPersonal } from "@/api/personal";
+import { getUserName } from "@/utils/app";
+import { postPersonal } from "@/api/personal";
 export default {
   name: "Home",
   data() {
     return {
+      editMsgOpenMsg: "编辑",
+      editMsgFlag: false,
+      editPhotoMsg: "更换头像",
+      editPhotoFlag: false,
       personalMsgName: "",
       personalMsgImgSrc: require("../../../assets/images/personalMsgImg.png"),
+      imageUrl: "",
       personalMsgGender: "3",
+      personalMsgGenderFont: "保密",
       personalMsgIntroduce: "",
       electiveCourse: [
         {
@@ -127,16 +158,88 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    let data = getUserName();
+    console.log(this.$store.state.user.userIcon);
+    console.log(this.$store.state.user.userIcon);
+    console.log(this.$store.state.user.userIcon);
+    getPersonal(data)
+      .then(response => {
+        console.log(response.data.message.personInformation);
+        this.personalMsgName = response.data.message.personInformation.name;
+        this.personalMsgImgSrc = response.data.message.personInformation.photo;
+        this.personalMsgGender = response.data.message.personInformation.sex;
+        this.personalMsgIntroduce =
+          response.data.message.personInformation.introduce;
+        if (this.personalMsgGender === "1") {
+          this.personalMsgGenderFont = "男";
+        }
+        if (this.personalMsgGender === "2") {
+          this.personalMsgGenderFont = "女";
+        }
+        if (this.personalMsgGender === "3") {
+          this.personalMsgGenderFont = "保密";
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || "image/png";
+      const isLt5M = file.size / 1024 / 1024 < 5;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt5M) {
+        this.$message.error("上传头像图片大小不能超过 5MB!");
+      }
+      return isJPG && isLt5M;
+    },
+
     imgEdit: function() {
-      alert("没对接上");
+      this.editPhotoFlag = !this.editPhotoFlag;
+      this.editPhotoFlag === false
+        ? (this.editPhotoMsg = "更换头像")
+        : (this.editPhotoMsg = "取消更改");
     },
     electiveCourseDel: function() {
       alert("没对接上");
     },
+    editOpen() {
+      this.editMsgFlag = !this.editMsgFlag;
+      if (this.editMsgFlag === true) {
+        this.editMsgOpenMsg = "取消编辑";
+      } else {
+        this.editMsgOpenMsg = "编辑";
+        this.editPhotoMsg = "更换头像";
+        this.editPhotoFlag = false;
+        this.$router.go(0);
+      }
+    },
     save: function() {
-      alert("没对接上");
+      this.editPhotoFlag = false;
+      this.editMsgFlag = false;
+      this.editMsgOpenMsg = "编辑";
+      let data = {
+        username: this.username,
+        name: this.name,
+        sex: this.personalMsgGender,
+        introduce: this.introduce
+      };
+      postPersonal(data)
+        .then(response => {
+          console.log(response.data.message);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.$router.go(0);
     }
   }
 };
@@ -144,6 +247,39 @@ export default {
 
 <!-- 添加“scoped”属性以将css仅限于此组件 -->
 <style lang="scss">
+.el-input.el-input--medium.is-disabled,
+.el-textarea.el-input--medium.is-disabled {
+  background-color: rgba(255, 255, 255, 0) !important;
+  input,
+  textarea {
+    color: #000000 !important;
+    cursor: default;
+    resize: none;
+  }
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 150px;
+  height: 150px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
 #personal {
   position: relative;
   background-color: rgba(247, 247, 247, 1);
@@ -157,13 +293,20 @@ export default {
       position: relative;
       width: 100%;
       background-color: #fff;
-      padding-top: 94px;
+      padding-top: 84px;
       .personalMainBoxP1 {
         margin-left: 54px;
         .personalMsgTitle {
-          font-size: 24px;
+          font-size: 26px;
           color: #333333;
-          margin-bottom: 38px;
+          margin-bottom: 46px;
+          margin-left: 20px;
+          .editMsgOpen {
+            font-size: 14px;
+            margin-left: 20px;
+            cursor: pointer;
+            color: #880000;
+          }
         }
         .personalMsg1 {
           margin-left: 68px;
@@ -192,11 +335,14 @@ export default {
           }
         }
         .personalMsg2 {
+          display: inline-block;
           padding-top: 40px;
+          padding-bottom: 20px;
           margin-left: 68px;
           .personalMsgImgSpan {
             position: relative;
-            top: -40px;
+            top: 10px;
+            vertical-align: top;
             display: inline-block;
             color: #6b6b6b;
             font-size: 20px;
@@ -207,6 +353,7 @@ export default {
             height: 150px;
             margin-left: 32px;
             vertical-align: top;
+            box-shadow: 0 0 5px rgba(150, 150, 150, 0.5);
             img {
               width: 100%;
               height: 100%;
@@ -248,6 +395,9 @@ export default {
             color: #6b6b6b;
             font-size: 20px;
             vertical-align: middle;
+            .personalMsgGenderSpanIn {
+              margin-left: 30px;
+            }
           }
           .personalMsgGenderR {
             display: inline-block;
@@ -285,12 +435,13 @@ export default {
         }
       }
       .personalMainBoxP2 {
+        padding-bottom: 80px;
         margin-top: 36px;
         margin-left: 54px;
         .electiveCourse {
           .electiveCourseTitle {
             margin-bottom: -20px;
-            font-size: 24px;
+            font-size: 26px;
             color: #333333;
           }
           .electiveCourseMain {
@@ -376,14 +527,14 @@ export default {
         }
       }
       .personalMainBoxP3 {
-        margin-top: 140px;
-        padding-bottom: 46px;
+        margin-top: 40px;
+        padding-bottom: 30px;
         .saveButton {
           display: inline-block;
-          margin-left: 880px;
+          margin-left: 36rem;
           button {
-            width: 142px;
-            height: 52px;
+            width: 128px;
+            height: 48px;
             background-color: #990000;
             outline: none;
             border: none;

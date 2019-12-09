@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <v-studentPart v-if="!this.$store.state.user.isTeacherFlag"></v-studentPart>
-    <v-teacherPart v-if="this.$store.state.user.isTeacherFlag"></v-teacherPart>
+    <!--<v-teacherPart v-if="this.$store.state.user.isTeacherFlag"></v-teacherPart>-->
+    <transition mode="out-in" v-if="this.$store.state.user.isTeacherFlag">
+      <router-view><!--teacherPart--></router-view>
+    </transition>
   </div>
 </template>
 
@@ -11,8 +14,8 @@ import { getIdentity } from "@/utils/app";
 export default {
   name: "app",
   components: {
-    "v-studentPart": () => import("./views/studentPart.vue"),
-    "v-teacherPart": () => import("./views/teacherPart.vue")
+    "v-studentPart": () => import("./views/studentPart.vue")
+    //"v-teacherPart": () => import("./views/teacherPart.vue")
   },
   data() {
     return {};

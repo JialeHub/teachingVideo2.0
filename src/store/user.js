@@ -1,7 +1,13 @@
-import { getToken, getUserName, getUserAccount } from "@/utils/app";
+import {
+  getToken,
+  getUserName,
+  getUserAccount,
+  getUserIcon
+} from "@/utils/app";
 const user = {
   state: {
     userName: getUserName(),
+    userIcon: getUserIcon(),
     userToken: getToken(),
     userAccount: getUserAccount(),
     isTeacherFlag: false
@@ -9,6 +15,10 @@ const user = {
   getters: {
     userName: function(state) {
       window.head_this.userName = state.userName;
+      window.head_this.userDropdown = !!getToken();
+    },
+    userIcon: function(state) {
+      window.head_this.circleUrl = state.userIcon;
     }
   },
   mutations: {
@@ -18,6 +28,9 @@ const user = {
     SET_userName(state, value) {
       state.userName = value;
     },
+    SET_userIcon(state, value) {
+      state.userIcon = value;
+    },
     SET_userToken(state, value) {
       state.userToken = value;
     },
@@ -26,6 +39,7 @@ const user = {
     },
     SET_user(state) {
       state.userName = getUserName();
+      state.userIcon = getUserIcon();
       state.userToken = getToken();
       state.userAccount = getUserAccount();
     }

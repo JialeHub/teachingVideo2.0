@@ -4,9 +4,20 @@ export function getToken() {
   return cookie.get("userToken") !== undefined ? cookie.get("userToken") : "";
 }
 export function getUserName() {
-  return cookie.get("userName") !== undefined
-    ? cookie.get("userName")
-    : "请登录";
+  if (getToken()) {
+    return cookie.get("userName") !== undefined
+      ? cookie.get("userName")
+      : "请登录";
+  } else {
+    return "请登录";
+  }
+}
+export function getUserIcon() {
+  if (getToken()) {
+    return cookie.get("userIcon") !== undefined ? cookie.get("userIcon") : "";
+  } else {
+    return "";
+  }
 }
 export function getUserPassword() {
   return cookie.get("userPassword") !== undefined
@@ -30,6 +41,9 @@ export function setToken(value) {
 export function setUserName(value) {
   return cookie.set("userName", value, { expires: 0.08333, path: "" });
 }
+export function setUserIcon(value) {
+  return cookie.set("userIcon", value, { expires: 0.08333, path: "" });
+}
 export function setUserPassword(value) {
   return cookie.set("userPassword", value, { expires: 14, path: "" });
 }
@@ -45,6 +59,9 @@ export function removeToken() {
 }
 export function removeUserName() {
   return cookie.remove("userName");
+}
+export function removeUserIcon() {
+  return cookie.remove("userIcon");
 }
 export function removeUserPassword() {
   return cookie.remove("userPassword");

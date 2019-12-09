@@ -4,6 +4,7 @@ Vue.use(Vuex);
 
 import user from "./user";
 import router from "./router";
+import teacherLayout from "./teacherLayout";
 
 export default new Vuex.Store({
   state: {
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     user,
-    router
+    router,
+    teacherLayout
   }
 });

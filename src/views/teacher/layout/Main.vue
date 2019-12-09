@@ -1,6 +1,8 @@
 <template>
-  <div id="consoleMain">
-    <router-view></router-view>
+  <div id="consoleMain" :class="consoleMain">
+    <transition mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -8,7 +10,12 @@
 export default {
   name: "ConsoleMain",
   data() {
-    return {};
+    return {
+      consoleMain: [""]
+    };
+  },
+  created() {
+    window.consoleMain_this = this;
   },
   methods: {}
 };
@@ -16,21 +23,20 @@ export default {
 
 <!-- 添加“scoped”属性以将css仅限于此组件 -->
 <style lang="scss">
-@import "../../../../styles/config";
+@import "@/styles/config";
 #consoleMain {
   position: fixed;
   left: $navWidth;
-  top: 75px;
+  top: 66px;
   right: 0;
   bottom: 0;
-  border: 30px solid #f7f7f7;
-  border-bottom: none;
-  -webkit-box-sizing: border-box;
+  padding: 30px;
+  overflow: auto;
 }
 .v-enter,
 .v-leave-to {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateX(10px);
 }
 .v-enter-active,
 .v-leave-active {

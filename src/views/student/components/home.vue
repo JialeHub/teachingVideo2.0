@@ -95,7 +95,6 @@ export default {
   },
   created() {
     window.home_this = this;
-
     homeApi()
       .then(response => {
         this.homeText2Content = response.data.message.courseLeader;

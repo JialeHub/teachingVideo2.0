@@ -63,9 +63,30 @@
               userName
             }}</router-link>
           </span>
-          <router-link to="/personal">
+
+          <!--<router-link to="/personal">
             <el-avatar :size="40" :src="circleUrl" id="head_avatar"></el-avatar>
-          </router-link>
+          </router-link>-->
+
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <el-avatar
+                :size="40"
+                :src="circleUrl"
+                id="head_avatar"
+              ></el-avatar>
+            </span>
+            <el-dropdown-menu slot="dropdown" v-if="userDropdown">
+              <el-dropdown-item>
+                <router-link to="/personal">
+                  个人中心
+                </router-link>
+              </el-dropdown-item>
+              <el-dropdown-item
+                ><div @click="exit">退出登录</div></el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-menu-item>
     </el-menu>
@@ -73,18 +94,22 @@
 </template>
 
 <script>
-import { getUserName } from "@/utils/app";
+import {
+  removeToken,
+  removeIdentity,
+  removeUserPassword,
+  getUserName,
+  getUserIcon,
+} from "@/utils/app";
 export default {
   name: "Head",
   data() {
     return {
+      userDropdown: false,
       activeIndex: "1",
       activeIndex2: "1",
       logo_link: "",
-      circleUrl:
-        "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      squareUrl:
-        "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+      circleUrl: getUserIcon(),
       sizeList: ["large", "medium", "small"],
       userName: getUserName()
     };
@@ -92,11 +117,21 @@ export default {
   created() {
     window.head_this = this;
     this.userName = getUserName();
+    this.userIcon = getUserIcon();
   },
   mounted() {
     this.userName = getUserName();
+    this.userIcon = getUserIcon();
   },
   methods: {
+    exit: function() {
+      console.log("OK");
+      removeToken();
+      removeIdentity();
+      removeUserPassword();
+      this.$store.commit("user/SET_user");
+      window.location.reload();
+    },
     goHome() {
       this.$router.push({ name: "home" });
     },
