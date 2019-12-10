@@ -24,7 +24,7 @@ function endLoading() {
 }
 
 const service = axios.create({
-  baseURL: "/devApi",
+  baseURL: "http://129.204.189.149:8089",
   timeout: 3000
 }); //创建axios赋给变量service
 

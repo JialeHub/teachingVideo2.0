@@ -99,8 +99,9 @@ import {
   removeIdentity,
   removeUserPassword,
   getUserName,
-  getUserIcon,
+  getUserIcon
 } from "@/utils/app";
+import {getToken} from "../../../utils/app";
 export default {
   name: "Head",
   data() {
@@ -116,12 +117,14 @@ export default {
   },
   created() {
     window.head_this = this;
-    this.userName = getUserName();
-    this.userIcon = getUserIcon();
+    this.userName = this.$store.state.user.userName;
+    this.userIcon = this.$store.state.user.userIcon;
+    this.userDropdown = !!getToken();
   },
   mounted() {
-    this.userName = getUserName();
-    this.userIcon = getUserIcon();
+    this.userName = this.$store.state.user.userName;
+    this.userIcon = this.$store.state.user.userIcon;
+    this.userDropdown = !!getToken();
   },
   methods: {
     exit: function() {

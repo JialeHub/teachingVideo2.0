@@ -36,7 +36,9 @@
             label="提交作业"
             width="100"
           >
-            <el-button @click="homeworkSubmit">提交</el-button>
+            <template slot-scope="scope">
+              <el-button @click="homeworkSubmit(scope.row)">提交</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -53,6 +55,32 @@
         </div>
       </div>
     </div>
+    <el-dialog title="作业提交" :visible.sync="dialogVisible" width="30%">
+      <el-upload
+        class="upload-demo"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        multiple
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="dialogData.fileList"
+        auto-upload="false"
+      >
+        <div class="dialogDataCode">
+          <!--slot="tip" class="el-upload__tip"-->
+          作业编号：{{ dialogData.code }}
+        </div>
+        <el-button size="small" type="primary">点击上传</el-button>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="uploadCancel">取 消</el-button>
+        <el-button type="primary" @click="uploadOK"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,6 +89,11 @@ export default {
   name: "Homework",
   data() {
     return {
+      dialogVisible: false,
+      dialogData: {
+        code: "",
+        fileList: []
+      },
       tableData: [
         {
           code: 1,
@@ -88,24 +121,6 @@ export default {
             "关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏",
           address: "1上海市普陀区金沙江路 1518 弄",
           lastTime: "2019-05-31 21:56:12"
-        },
-        {
-          code: 4,
-          name: "关于蔡徐坤打篮球动作的解析与鉴赏",
-          date: "2016-05-02",
-          requirement:
-            "关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏",
-          address: "1上海市普陀区金沙江路 1518 弄",
-          lastTime: "2019-05-31 21:56:12"
-        },
-        {
-          code: 4,
-          name: "关于蔡徐坤打篮球动作的解析与鉴赏",
-          date: "2016-05-02",
-          requirement:
-            "关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏关于蔡徐坤打篮球动作的解析与鉴赏",
-          address: "1上海市普陀区金沙江路 1518 弄",
-          lastTime: "2019-05-31 21:56:12"
         }
       ],
       commentTotal: 1000
@@ -113,10 +128,40 @@ export default {
   },
   created() {},
   methods: {
-    formatter(row) {
-      return row.address;
+    uploadOK() {
+      this.dialogData.code = "";
+      this.dialogData.fileList = [];
+      this.dialogVisible = false;
     },
-    homeworkSubmit() {}
+    uploadCancel() {
+      this.dialogData.code = "";
+      this.dialogData.fileList = [];
+      this.dialogVisible = false;
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    formatter(row) {
+      return row;
+    },
+    homeworkSubmit(row) {
+      this.dialogVisible = true;
+      this.dialogData.code = row.code;
+      /*alert(row.code);*/
+    }
   }
 };
 </script>
@@ -126,6 +171,12 @@ export default {
 #homework {
   position: relative;
   background-color: rgba(247, 247, 247, 1);
+  .el-dialog__body {
+    padding: 20px !important;
+  }
+  .dialogDataCode {
+    padding-bottom: 10px;
+  }
   .homeworkMain {
     width: 1060px;
     margin: 0 auto;

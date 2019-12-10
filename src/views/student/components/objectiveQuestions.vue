@@ -16,7 +16,7 @@
               v-for="(item2, j) in item3.objectiveQuestionsIn"
               :key="item2.id"
             >
-              <h4>{{ j + 1 }}.{{ item2.h4 }}</h4>
+              <!--<h4>{{ j + 1 }}.{{ item2.h4 }}</h4>
               <el-radio
                 v-model="item2.radio"
                 :label="i"
@@ -26,7 +26,15 @@
               >
               <span class="answerText" v-show="answerText"
                 >正确答案为：{{ item2.answerText }}</span
-              >
+              >-->
+              <div class="objectiveQuestionsFiles">
+                <h4>
+                  <span v-show="!answerText">题目</span
+                  ><span v-show="answerText">答案</span>{{ j + 1 }}：
+                </h4>
+                <img :src="item2.Files" alt="" v-show="!answerText" />
+                <img :src="item2.Files2" alt="" v-show="answerText" />
+              </div>
             </div>
 
             <div class="answerBtn">
@@ -51,7 +59,7 @@ export default {
           contentTitle: "章节一 蔡徐坤",
           objectiveQuestionsIn: [
             {
-              id: 1,
+              /*id: 1,
               h4:
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
               Options: [
@@ -61,126 +69,56 @@ export default {
                 { id: 4, Value: "项4" }
               ],
               answerText: "C",
-              radio: "1"
+              radio: "1"*/
+              id: 1,
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             },
             {
               id: 2,
-              h4:
-                "Google 的免费翻译服务可提供简体中文和的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "选项" },
-                { id: 2, Value: "选er" },
-                { id: 3, Value: "选s" },
-                { id: 4, Value: "选项" }
-              ],
-              answerText: "B",
-              radio: ""
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             },
             {
               id: 3,
-              h4:
-                "Google 的免费翻译服务可提供简体中文和另外 100 多种语言之间的互、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "项一" },
-                { id: 2, Value: "选项er" },
-                { id: 3, Value: "项s" },
-                { id: 4, Value: "项4" }
-              ],
-              answerText: "A",
-              radio: ""
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             }
           ]
         },
         {
           id: 2,
-          contentTitle: "章节二 卢本伟",
+          contentTitle: "章节二 呃呃呃",
           objectiveQuestionsIn: [
             {
               id: 1,
-              h4:
-                "G供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "啊一" },
-                { id: 2, Value: "选2r" },
-                { id: 3, Value: "选ds" },
-                { id: 4, Value: "选v4" }
-              ],
-              answerText: "A",
-              radio: ""
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             },
             {
               id: 2,
-              h4:
-                "Google 的免费翻译服务可提供简h言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "选项一" },
-                { id: 2, Value: "rr" },
-                { id: 3, Value: "选hs" },
-                { id: 4, Value: "选a" }
-              ],
-              answerText: "B",
-              radio: ""
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             },
             {
               id: 3,
-              h4:
-                "Google 的免4提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "选b一" },
-                { id: 2, Value: "选项er" },
-                { id: 3, Value: "选es" },
-                { id: 4, Value: "选项4" }
-              ],
-              answerText: "B",
-              radio: ""
+              Files:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3698881779,3182004483&fm=26&gp=0.jpg",
+              Files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575947467700&di=23e3b8ca4354d463728175cff0fcc43b&imgtype=0&src=http%3A%2F%2Fdfiles.jiajiaoban.com%2Fimg%2F2018%2F02%2F01%2F105900_5a72827448152.jpg"
             }
           ]
         },
-        {
-          id: 3,
-          contentTitle: "章节三 马云",
-          objectiveQuestionsIn: [
-            {
-              id: 1,
-              h4:
-                "Google 的免费翻译服务可提r中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "选r" },
-                { id: 2, Value: "选项c" },
-                { id: 3, Value: "h" },
-                { id: 4, Value: "选c4" }
-              ],
-              answerText: "A",
-              radio: ""
-            },
-            {
-              id: 2,
-              h4:
-                "Google 的免费翻译s简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "选dfb一" },
-                { id: 2, Value: "选ber" },
-                { id: 3, Value: "选mns" },
-                { id: 4, Value: "选项4" }
-              ],
-              answerText: "D",
-              radio: ""
-            },
-            {
-              id: 3,
-              h4:
-                "Google 的免g语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              Options: [
-                { id: 1, Value: "sd项一" },
-                { id: 2, Value: "选dsr" },
-                { id: 3, Value: "选项s" },
-                { id: 4, Value: "选jk" }
-              ],
-              answerText: "B",
-              radio: ""
-            }
-          ]
-        }
       ]
     };
   },
@@ -281,6 +219,12 @@ export default {
               line-height: 40px;
               font-size: 16px;
               color: #990000;
+            }
+            .objectiveQuestionsFiles img {
+              width: 720px;
+            }
+            .objectiveQuestionsFiles2 img {
+              width: 720px;
             }
           }
           .objectiveQuestionsIn:first-of-type {

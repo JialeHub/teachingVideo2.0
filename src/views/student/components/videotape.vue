@@ -34,7 +34,9 @@
             label="查看"
             width="100"
           >
-            <el-button @click="videotapeWatch">查看</el-button>
+            <template slot-scope="scope">
+              <el-button @click="videotapeWatch(scope.row)">查看</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -69,7 +71,7 @@ export default {
           lastTime: "2019-05-31 21:56"
         },
         {
-          code: 1,
+          code: 2,
           videotapeIntroduce: "我是简介",
           videotapeName: "关于蔡徐坤打篮球动作的解析与鉴赏",
           requirement:
@@ -85,7 +87,9 @@ export default {
     formatter(row) {
       return row.address;
     },
-    videotapeWatch() {}
+    videotapeWatch(row) {
+      alert(row.code);
+    }
   }
 };
 </script>

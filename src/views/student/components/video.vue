@@ -1,13 +1,13 @@
 <template>
   <div id="video">
     <div class="videoMain">
-      <div class="back">
-        <el-link :underline="false" :href="backUrl">
-          <span class="el-icon-back"></span>
-          <span>返回课程主页面</span>
-        </el-link>
-      </div>
       <div class="videoMainL">
+        <div class="back">
+          <el-link :underline="false" :href="backUrl">
+            <span class="el-icon-back"></span>
+            <span>返回课程主页面</span>
+          </el-link>
+        </div>
         <div class="videoTitle">
           <span>{{ classTitle }}：{{ classValue }}</span>
         </div>
@@ -20,7 +20,6 @@
           </div>
         </div>
       </div>
-      <div class="videoMainR"></div>
     </div>
   </div>
 </template>
@@ -47,10 +46,10 @@ export default {
   margin: 0;
   padding: 0;
   .videoMain {
+    padding-bottom: 50px;
     position: relative;
-    margin-top: 20px;
-    margin-left: 18px;
     height: 100%;
+    background-color: rgba(240,240,240,0.5);
     .back {
       font-size: 16px;
       margin-top: 16px;
@@ -60,8 +59,9 @@ export default {
       }
     }
     .videoMainL {
+      margin-left: 16.6%;
       display: inline-block;
-      width: 75%;
+      width: 66%;
       .videoTitle {
         font-size: 18px;
         margin-top: 16px;

@@ -1,7 +1,7 @@
 <template>
   <div id="evaluate_student">
     <div class="evaluate_student">
-      <h2 id="evaluate_studentTitle">教师评价</h2>
+      <h2 id="evaluate_studentTitle">学生评价</h2>
       <div class="evaluate_studentMain">
         <div
           class="evaluate_studentIn"

@@ -33,7 +33,9 @@
             label="查看"
             width="100"
           >
-            <el-button @click="coursewareWatch">查看</el-button>
+            <template slot-scope="scope">
+              <el-button @click="coursewareWatch(scope.row)">查看</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -68,7 +70,7 @@ export default {
           lastTime: "2019-05-31 21:56"
         },
         {
-          code: 1,
+          code: 2,
           coursewareIntroduce: "我是简介",
           coursewareName: "关于蔡徐坤打篮球动作的解析与鉴赏",
           requirement:
@@ -82,9 +84,11 @@ export default {
   created() {},
   methods: {
     formatter(row) {
-      return row.address;
+      return row;
     },
-    coursewareWatch() {}
+    coursewareWatch(row) {
+      alert(row.code);
+    }
   }
 };
 </script>

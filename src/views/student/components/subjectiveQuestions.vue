@@ -16,10 +16,26 @@
               v-for="(item2, j) in item3.subjectiveQuestionsIn"
               :key="item2.id"
             >
-              <h4>{{ j + 1 }}.{{ item2.h4 }}</h4>
+              <!--<h4>{{ j + 1 }}.{{ item2.h4 }}</h4>
               <span class="answerText" v-show="item2.answerTextBtn"
                 >正确答案为：{{ item2.answerText }}</span
+              >-->
+              <h4>
+                <span v-show="!item2.answerTextBtn">题目</span
+                ><span v-show="item2.answerTextBtn">答案</span>{{ j + 1 }}：
+              </h4>
+              <div
+                class="subjectiveQuestionsFiles"
+                v-show="!item2.answerTextBtn"
               >
+                <img :src="item2.files1" alt="" />
+              </div>
+              <div
+                class="subjectiveQuestionsFiles2"
+                v-show="item2.answerTextBtn"
+              >
+                <img :src="item2.files2" alt="" />
+              </div>
               <div class="answerBtn">
                 <el-button @click="item2.answerTextBtn = !item2.answerTextBtn"
                   >答案</el-button
@@ -49,27 +65,29 @@ export default {
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
               answerText:
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容",
-              answerTextBtn: false
+              answerTextBtn: false,
+              files1:
+                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1671111928,2261235558&fm=26&gp=0.jpg",
+              files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575948855029&di=350d0e9726c4497f49afc7070a3d6612&imgtype=0&src=http%3A%2F%2Fwww.dongao.com%2Fupload%2Fresources%2Fimage%2F2018%2F08%2F10%2F158576.jpg"
             },
             {
               id: 2,
               h4:
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
+              answerText:
+                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容",
+              answerTextBtn: false,
+              files1:
+                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1671111928,2261235558&fm=26&gp=0.jpg",
+              files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575948855029&di=350d0e9726c4497f49afc7070a3d6612&imgtype=0&src=http%3A%2F%2Fwww.dongao.com%2Fupload%2Fresources%2Fimage%2F2018%2F08%2F10%2F158576.jpg"
             },
-            {
-              id: 3,
-              h4:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
-            }
           ]
         },
         {
           id: 2,
-          contentTitle: "章节二 蔡坤",
+          contentTitle: "章节二 分析啊",
           subjectiveQuestionsIn: [
             {
               id: 1,
@@ -77,52 +95,26 @@ export default {
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
               answerText:
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容",
-              answerTextBtn: false
+              answerTextBtn: false,
+              files2:
+                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1671111928,2261235558&fm=26&gp=0.jpg",
+              files1:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575948855029&di=350d0e9726c4497f49afc7070a3d6612&imgtype=0&src=http%3A%2F%2Fwww.dongao.com%2Fupload%2Fresources%2Fimage%2F2018%2F08%2F10%2F158576.jpg"
             },
             {
               id: 2,
               h4:
                 "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
+              answerText:
+                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容",
+              answerTextBtn: false,
+              files1:
+                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1671111928,2261235558&fm=26&gp=0.jpg",
+              files2:
+                "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575948855029&di=350d0e9726c4497f49afc7070a3d6612&imgtype=0&src=http%3A%2F%2Fwww.dongao.com%2Fupload%2Fresources%2Fimage%2F2018%2F08%2F10%2F158576.jpg"
             },
-            {
-              id: 3,
-              h4:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
-            }
           ]
         },
-        {
-          id: 3,
-          contentTitle: "章节三 徐坤",
-          subjectiveQuestionsIn: [
-            {
-              id: 1,
-              h4:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容",
-              answerTextBtn: false
-            },
-            {
-              id: 2,
-              h4:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
-            },
-            {
-              id: 3,
-              h4:
-                "译服务可提供简体中文和另外 100 多种语言之间的互译功能,可让您即时翻译字词、短语和网页内容。",
-              answerText: "C",
-              answerTextBtn: false
-            }
-          ]
-        }
       ]
     };
   },
@@ -197,6 +189,12 @@ export default {
               line-height: 28px;
               padding-bottom: 6px;
             }
+            .subjectiveQuestionsFiles img {
+              width: 720px;
+            }
+            .subjectiveQuestionsFiles2 img {
+              width: 720px;
+            }
             .el-radio {
               width: 100%;
               height: 26px;
@@ -221,6 +219,7 @@ export default {
             width: 100%;
             bottom: 0;
             margin-bottom: 50px;
+            margin-top: 20px;
             button {
               width: 100px;
               height: 36px;
